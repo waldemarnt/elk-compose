@@ -19,4 +19,4 @@ logging:
   files:
     rotateeverybytes: 10485760 # = 10MB
   selectors: ["*"]
-  level: debug
+  level: warning
