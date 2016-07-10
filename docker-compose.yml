@@ -1,0 +1,31 @@
+version: "2"
+services:
+  elasticsearch:
+    image: elasticsearch:2.3.3
+    command: elasticsearch -Des.network.host=0.0.0.0
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+  kibana:
+    image: kibana:4.5.1
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+  logstash:
+    image: logstash:2.3.2
+    command: logstash -f /etc/logstash/conf.d/logstash.conf
+    volumes:
+      - ./logstash:/etc/logstash/conf.d
+      - ./logstash/patterns:/opt/logstash/patterns
+    ports:
+      - "5000:5000"
+    depends_on:
+      - elasticsearch
+  filebeat:
+    image: prima/filebeat
+    volumes:
+      - ./filebeat/filebeat.yml:/filebeat.yml
+      - ../fake-logs:/var/log
+    depends_on:
+      - logstash

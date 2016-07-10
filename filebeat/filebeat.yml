@@ -1,0 +1,22 @@
+filebeat:
+  prospectors:
+    -
+      paths:
+        - /var/log/nginx/vs_access.log
+      input_type: log
+      document_type: nginx_access
+      scan_frequency: 10s
+    -
+      paths:
+        - /var/log/error.log
+      input_type: log
+      document_type: app_error
+      scan_frequency: 10s
+output:
+  logstash:
+    hosts: ["logstash:5044"]
+logging:
+  files:
+    rotateeverybytes: 10485760 # = 10MB
+  selectors: ["*"]
+  level: debug
