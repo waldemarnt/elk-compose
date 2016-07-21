@@ -3,9 +3,6 @@ services:
   elasticsearch:
     image: elasticsearch:2.3.3
     command: elasticsearch -Des.network.host=0.0.0.0
-    ports:
-      - "9200:9200"
-      - "9300:9300"
   kibana:
     image: kibana:4.5.1
     ports:
@@ -18,8 +15,6 @@ services:
     volumes:
       - ./logstash:/etc/logstash/conf.d
       - ./logstash/patterns:/opt/logstash/patterns
-    ports:
-      - "5000:5000"
     depends_on:
       - elasticsearch
   filebeat:
